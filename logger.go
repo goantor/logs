@@ -14,7 +14,7 @@ type Logger interface {
 	GenerateId()
 
 	// GetId 获取追踪ID
-	//GetId() string
+	GetId() string
 
 	// User 注入数据
 	User(user interface{})
@@ -44,7 +44,7 @@ type logger struct {
 	params interface{}
 }
 
-func New(method, action, ip string) *logger {
+func New(method, action, ip string) Logger {
 	l := &logger{
 		method: method,
 		action: action,
@@ -60,6 +60,10 @@ func (l *logger) GenerateId() {
 	u := uuid.NewV4().Bytes()
 	hex.Encode(buf, u)
 	l.id = string(buf)
+}
+
+func (l *logger) GetId() string {
+	return l.id
 }
 
 func (l *logger) User(user interface{}) {

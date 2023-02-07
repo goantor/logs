@@ -1,6 +1,6 @@
 module github.com/goantor/logs
 
-go 1.19
+go 1.20
 
 require (
 	github.com/goantor/ex v0.0.0-20230111073112-d046784ddfc4
