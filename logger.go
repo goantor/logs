@@ -16,6 +16,8 @@ type Logger interface {
 	// GetId 获取追踪ID
 	GetId() string
 
+	BindId(id string)
+
 	// User 注入数据
 	User(user interface{})
 
@@ -64,6 +66,10 @@ func (l *logger) GenerateId() {
 
 func (l *logger) GetId() string {
 	return l.id
+}
+
+func (l *logger) BindId(id string) {
+	l.id = id
 }
 
 func (l *logger) User(user interface{}) {
