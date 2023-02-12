@@ -2,6 +2,7 @@ package logs
 
 import (
 	"fmt"
+	"github.com/goantor/pr"
 	rotate "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
@@ -54,6 +55,7 @@ func (e Entity) display() (err error) {
 		return
 	}
 
+	pr.StopPrint()
 	file, err := os.OpenFile(os.DevNull, os.O_CREATE|os.O_RDWR|os.O_APPEND, 0644)
 	if err != nil {
 		return err

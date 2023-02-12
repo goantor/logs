@@ -11,8 +11,12 @@ require (
 )
 
 require (
+	github.com/fatih/color v1.14.1 // indirect
+	github.com/goantor/pr v0.0.1 // indirect
 	github.com/jonboulle/clockwork v0.3.0 // indirect
 	github.com/lestrrat-go/strftime v1.0.6 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 )

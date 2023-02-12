@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/goantor/ex"
+	"github.com/goantor/pr"
 	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 )
@@ -110,29 +111,36 @@ func (l *logger) log(level logrus.Level, message string) {
 }
 
 func (l *logger) Info(message string, data interface{}, extras ...interface{}) {
+	pr.PrintGreen("%s, %v\n", message, data)
 	l.log(logrus.InfoLevel, l.format(message, data, extras))
 }
 
 func (l *logger) Trace(message string, data interface{}, extras ...interface{}) {
+	pr.PrintBlue("%s, %v\n", message, data)
 	l.log(logrus.TraceLevel, l.format(message, data, extras))
 }
 
 func (l *logger) Debug(message string, data interface{}, extras ...interface{}) {
+	pr.PrintBlue("%s, %v\n", message, data)
 	l.log(logrus.DebugLevel, l.format(message, data, extras))
 }
 
 func (l *logger) Warn(message string, data interface{}, extras ...interface{}) {
+	pr.PrintYellow("%s, %v\n", message, data)
 	l.log(logrus.WarnLevel, l.format(message, data, extras))
 }
 
 func (l *logger) Fatal(message string, data interface{}, extras ...interface{}) {
+	pr.PrintRed("%s, %v\n", message, data)
 	l.log(logrus.FatalLevel, l.format(message, data, extras))
 }
 
 func (l *logger) Panic(message string, data interface{}, extras ...interface{}) {
+	pr.PrintRed("%s, %v\n", message, data)
 	l.log(logrus.PanicLevel, l.format(message, data, extras))
 }
 
 func (l *logger) Error(message string, data interface{}, extras ...interface{}) {
+	pr.PrintRed("%s, %v\n", message, data)
 	l.log(logrus.ErrorLevel, l.format(message, data, extras))
 }
