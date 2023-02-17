@@ -91,7 +91,7 @@ func (l *logger) format(message string, data interface{}) string {
 	}
 
 	js, _ := json.Marshal(jsParam)
-	return fmt.Sprintf("%6s Trace: %s %s IP: %s Message: %s Data: %s File: %s:%d", l.method, l.id, l.action, l.ip, message, js)
+	return fmt.Sprintf("%s Trace: %s %s IP: %s Message: %s Data: %s", l.method, l.id, l.action, l.ip, message, js)
 }
 
 func (l *logger) Auto(no ex.IErrno, message string, data interface{}) {
