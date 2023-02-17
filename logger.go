@@ -7,7 +7,6 @@ import (
 	"github.com/goantor/ex"
 	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
-	"runtime"
 )
 
 type pkgLogger interface {
@@ -91,9 +90,8 @@ func (l *logger) format(message string, data interface{}) string {
 		"data":   data,
 	}
 
-	_, f, line, _ := runtime.Caller(1)
 	js, _ := json.Marshal(jsParam)
-	return fmt.Sprintf("%6s Trace: %s %s IP: %s Message: %s Data: %s File: %s:%d", l.method, l.id, l.action, l.ip, message, js, f, line)
+	return fmt.Sprintf("%6s Trace: %s %s IP: %s Message: %s Data: %s File: %s:%d", l.method, l.id, l.action, l.ip, message, js)
 }
 
 func (l *logger) Auto(no ex.IErrno, message string, data interface{}) {
