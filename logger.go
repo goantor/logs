@@ -5,12 +5,24 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/goantor/ex"
-	"github.com/goantor/pr"
 	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
+	"runtime"
 )
 
+type pkgLogger interface {
+	Info(message string, data interface{})
+	Trace(message string, data interface{})
+	Debug(message string, data interface{})
+	Warn(message string, data interface{})
+	Fatal(message string, data interface{})
+	Panic(message string, data interface{})
+	Error(message string, data interface{})
+}
+
 type Logger interface {
+	pkgLogger
+
 	// GenerateId 创建追踪id
 	GenerateId()
 
@@ -26,16 +38,7 @@ type Logger interface {
 	Params(params interface{})
 
 	// Auto 自动识别log等级
-	Auto(no ex.IErrno, message string, data interface{}, extras ...interface{})
-
-	// Info Trace Debug Fatal Panic Error Warning 不同等级的Log
-	Info(message string, data interface{}, extras ...interface{})
-	Trace(message string, data interface{}, extras ...interface{})
-	Debug(message string, data interface{}, extras ...interface{})
-	Warn(message string, data interface{}, extras ...interface{})
-	Fatal(message string, data interface{}, extras ...interface{})
-	Panic(message string, data interface{}, extras ...interface{})
-	Error(message string, data interface{}, extras ...interface{})
+	Auto(no ex.IErrno, message string, data interface{})
 }
 
 type logger struct {
@@ -81,66 +84,51 @@ func (l *logger) Params(params interface{}) {
 	l.params = params
 }
 
-func (l *logger) format(message string, data interface{}, extras ...interface{}) string {
+func (l *logger) format(message string, data interface{}) string {
 	jsParam := map[string]interface{}{
 		"user":   l.user,
 		"params": l.params,
 		"data":   data,
-		"extras": extras,
 	}
 
-	if data != nil {
-		jsParam["data"] = data
-	}
-
-	if len(extras) > 0 {
-		jsParam["extras"] = extras
-	}
-
+	_, f, line, _ := runtime.Caller(1)
 	js, _ := json.Marshal(jsParam)
-	return fmt.Sprintf("TRACE:%s %s %s IP:%s <%s> CONTEXT:%s", l.id, l.method, l.action, l.ip, message, js)
+	return fmt.Sprintf("%6s Trace: %s %s IP: %s Message: %s Data: %s File: %s:%d", l.method, l.id, l.action, l.ip, message, js, f, line)
 }
 
-func (l *logger) Auto(no ex.IErrno, message string, data interface{}, extras ...interface{}) {
+func (l *logger) Auto(no ex.IErrno, message string, data interface{}) {
 	level, _ := logrus.ParseLevel(no.Level())
-	go l.log(level, l.format(message, data, extras))
+	go l.log(level, l.format(message, data))
 }
 
 func (l *logger) log(level logrus.Level, message string) {
-	go entity.Log(level, message)
+	entity.Log(level, message)
 }
 
-func (l *logger) Info(message string, data interface{}, extras ...interface{}) {
-	pr.PrintGreen("%s, %v\n", message, data)
-	l.log(logrus.InfoLevel, l.format(message, data, extras))
+func (l *logger) Info(message string, data interface{}) {
+	l.log(logrus.InfoLevel, l.format(message, data))
 }
 
-func (l *logger) Trace(message string, data interface{}, extras ...interface{}) {
-	pr.PrintBlue("%s, %v\n", message, data)
-	l.log(logrus.TraceLevel, l.format(message, data, extras))
+func (l *logger) Trace(message string, data interface{}) {
+	l.log(logrus.TraceLevel, l.format(message, data))
 }
 
-func (l *logger) Debug(message string, data interface{}, extras ...interface{}) {
-	pr.PrintBlue("%s, %v\n", message, data)
-	l.log(logrus.DebugLevel, l.format(message, data, extras))
+func (l *logger) Debug(message string, data interface{}) {
+	l.log(logrus.DebugLevel, l.format(message, data))
 }
 
-func (l *logger) Warn(message string, data interface{}, extras ...interface{}) {
-	pr.PrintYellow("%s, %v\n", message, data)
-	l.log(logrus.WarnLevel, l.format(message, data, extras))
+func (l *logger) Warn(message string, data interface{}) {
+	l.log(logrus.WarnLevel, l.format(message, data))
 }
 
-func (l *logger) Fatal(message string, data interface{}, extras ...interface{}) {
-	pr.PrintRed("%s, %v\n", message, data)
-	l.log(logrus.FatalLevel, l.format(message, data, extras))
+func (l *logger) Fatal(message string, data interface{}) {
+	l.log(logrus.FatalLevel, l.format(message, data))
 }
 
-func (l *logger) Panic(message string, data interface{}, extras ...interface{}) {
-	pr.PrintRed("%s, %v\n", message, data)
-	l.log(logrus.PanicLevel, l.format(message, data, extras))
+func (l *logger) Panic(message string, data interface{}) {
+	l.log(logrus.PanicLevel, l.format(message, data))
 }
 
-func (l *logger) Error(message string, data interface{}, extras ...interface{}) {
-	pr.PrintRed("%s, %v\n", message, data)
-	l.log(logrus.ErrorLevel, l.format(message, data, extras))
+func (l *logger) Error(message string, data interface{}) {
+	l.log(logrus.ErrorLevel, l.format(message, data))
 }
