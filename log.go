@@ -41,6 +41,7 @@ func (e Entity) Initialize() {
 
 	level, _ := logrus.ParseLevel(e.opt.Level)
 	entity.SetLevel(level)
+
 	entity.SetReportCaller(true)
 
 	formatter := &Formatter{e.opt.TimestampFormat}
