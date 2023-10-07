@@ -6,8 +6,6 @@ import (
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
 	"os"
-	"runtime"
-	"strconv"
 	"time"
 )
 
@@ -56,10 +54,6 @@ func (e Entity) Initialize() {
 	//	CallerPrettyfier: customCallerPrettyfier,
 	//})
 
-}
-
-func customCallerPrettyfier(frame *runtime.Frame) (string, string) {
-	return "Calling File: " + frame.Function, "Line: " + strconv.Itoa(frame.Line)
 }
 
 // display 关闭控制输出

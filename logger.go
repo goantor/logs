@@ -83,7 +83,7 @@ func (l *logger) Params(params interface{}) {
 	l.params = params
 }
 
-func (l *logger) format(message string, data interface{}) string {
+func (l *logger) format(level logrus.Level, message string, data interface{}) string {
 	jsParam := map[string]interface{}{
 		"user":   l.user,
 		"params": l.params,
@@ -91,12 +91,17 @@ func (l *logger) format(message string, data interface{}) string {
 	}
 
 	js, _ := json.Marshal(jsParam)
-	return fmt.Sprintf("%s Trace: %s %s IP: %s Message: %s Data: %s", l.method, l.id, l.action, l.ip, message, js)
+	if level < 4 {
+		return fmt.Sprintf("%s Trace: %s %s IP: %s Message: %s Data: %s\nstack:\n%s", l.method, l.id, l.action, l.ip, message, js, makeCallStack())
+	}
+
+	return fmt.Sprintf("%s Trace: %s %s IP: %s Message: %s Data: %s ", l.method, l.id, l.action, l.ip, message, js)
+
 }
 
 func (l *logger) Auto(no ex.IErrno, message string, data interface{}) {
 	level, _ := logrus.ParseLevel(no.Level())
-	go l.log(level, l.format(message, data))
+	go l.log(level, l.format(level, message, data))
 }
 
 func (l *logger) log(level logrus.Level, message string) {
@@ -104,29 +109,29 @@ func (l *logger) log(level logrus.Level, message string) {
 }
 
 func (l *logger) Info(message string, data interface{}) {
-	l.log(logrus.InfoLevel, l.format(message, data))
+	l.log(logrus.InfoLevel, l.format(logrus.InfoLevel, message, data))
 }
 
 func (l *logger) Trace(message string, data interface{}) {
-	l.log(logrus.TraceLevel, l.format(message, data))
+	l.log(logrus.TraceLevel, l.format(logrus.TraceLevel, message, data))
 }
 
 func (l *logger) Debug(message string, data interface{}) {
-	l.log(logrus.DebugLevel, l.format(message, data))
+	l.log(logrus.DebugLevel, l.format(logrus.DebugLevel, message, data))
 }
 
 func (l *logger) Warn(message string, data interface{}) {
-	l.log(logrus.WarnLevel, l.format(message, data))
+	l.log(logrus.WarnLevel, l.format(logrus.WarnLevel, message, data))
 }
 
 func (l *logger) Fatal(message string, data interface{}) {
-	l.log(logrus.FatalLevel, l.format(message, data))
+	l.log(logrus.FatalLevel, l.format(logrus.FatalLevel, message, data))
 }
 
 func (l *logger) Panic(message string, data interface{}) {
-	l.log(logrus.PanicLevel, l.format(message, data))
+	l.log(logrus.PanicLevel, l.format(logrus.PanicLevel, message, data))
 }
 
 func (l *logger) Error(message string, data interface{}) {
-	l.log(logrus.ErrorLevel, l.format(message, data))
+	l.log(logrus.ErrorLevel, l.format(logrus.ErrorLevel, message, data))
 }

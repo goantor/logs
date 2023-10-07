@@ -24,13 +24,11 @@ func (f *Formatter) Format(entry *logrus.Entry) ([]byte, error) {
 	buf := f.buf(entry)
 	var message string
 
-	fmt.Println(entry.Level < 4)
-	if entry.Level < 4 {
-		message = fmt.Sprintf("[%v] %v\nstack:\n%s", entry.Time.Format(f.timestampFormat), entry.Message, makeCallStack())
-	} else {
-		message = fmt.Sprintf("[%v] %v", entry.Time.Format(f.timestampFormat), entry.Message)
-	}
-	fmt.Println(message)
+	//if entry.Level < 4 {
+	//	message = fmt.Sprintf("[%v] %v stack:%s", entry.Time.Format(f.timestampFormat), entry.Message, makeCallStack())
+	//} else {
+	message = fmt.Sprintf("[%v] %v", entry.Time.Format(f.timestampFormat), entry.Message)
+	//}
 
 	buf.WriteString(message)
 	buf.WriteByte('\n')
