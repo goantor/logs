@@ -6,6 +6,8 @@ import (
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
 	"os"
+	"runtime"
+	"strconv"
 	"time"
 )
 
@@ -42,18 +44,21 @@ func (e Entity) Initialize() {
 	level, _ := logrus.ParseLevel(e.opt.Level)
 	entity.SetLevel(level)
 
-	entity.SetReportCaller(false)
+	entity.SetReportCaller(true)
 
 	formatter := &Formatter{e.opt.TimestampFormat}
 	levels := []logrus.Level{logrus.DebugLevel, logrus.InfoLevel, logrus.WarnLevel, logrus.ErrorLevel, logrus.FatalLevel}
 	lfHook := lfshook.NewHook(e.outputMap(levels...), formatter)
 	entity.AddHook(lfHook)
 
-	line := &lineHook{
-		Field: "files",
-	}
+	entity.SetFormatter(&logrus.TextFormatter{
+		CallerPrettyfier: customCallerPrettyfier,
+	})
 
-	entity.AddHook(line)
+}
+
+func customCallerPrettyfier(frame *runtime.Frame) (string, string) {
+	return "Calling File: " + frame.Function, "Line: " + strconv.Itoa(frame.Line)
 }
 
 // display 关闭控制输出
