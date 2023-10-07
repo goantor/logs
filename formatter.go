@@ -43,9 +43,9 @@ func makeCallStack() string {
 			break
 		}
 
-		if -1 != strings.Index(file, "pkg/mod") {
-			continue
-		}
+		//if -1 != strings.Index(file, "pkg/mod") {
+		//	continue
+		//}
 
 		callStack = append(callStack, fmt.Sprintf("%s:%d", file, line))
 		if pc == 0 {
