@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	entity  *logrus.Logger
-	options *Options
+	entity *logrus.Logger
+	//options *Options
 	//once      sync.Once
 	//singleton *Entity
 )
@@ -48,6 +48,12 @@ func (e Entity) Initialize() {
 	levels := []logrus.Level{logrus.DebugLevel, logrus.InfoLevel, logrus.WarnLevel, logrus.ErrorLevel, logrus.FatalLevel}
 	lfHook := lfshook.NewHook(e.outputMap(levels...), formatter)
 	entity.AddHook(lfHook)
+
+	line := &lineHook{
+		Field: "files",
+	}
+
+	entity.AddHook(line)
 }
 
 // display 关闭控制输出
