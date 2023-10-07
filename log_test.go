@@ -19,7 +19,7 @@ func TestLog(t *testing.T) {
 
 	l := New("/test", "POST", "192.168.1.1")
 
-	l.Info("xxxx", map[string]interface{}{
+	l.Error("xxxx", map[string]interface{}{
 		"name": "ll",
 	})
 }

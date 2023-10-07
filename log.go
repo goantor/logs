@@ -44,16 +44,17 @@ func (e Entity) Initialize() {
 	level, _ := logrus.ParseLevel(e.opt.Level)
 	entity.SetLevel(level)
 
-	entity.SetReportCaller(true)
+	//entity.SetReportCaller(true)
+	//entity.SetReportCaller()
 
 	formatter := &Formatter{e.opt.TimestampFormat}
 	levels := []logrus.Level{logrus.DebugLevel, logrus.InfoLevel, logrus.WarnLevel, logrus.ErrorLevel, logrus.FatalLevel}
 	lfHook := lfshook.NewHook(e.outputMap(levels...), formatter)
 	entity.AddHook(lfHook)
 
-	entity.SetFormatter(&logrus.TextFormatter{
-		CallerPrettyfier: customCallerPrettyfier,
-	})
+	//entity.SetFormatter(&logrus.TextFormatter{
+	//	CallerPrettyfier: customCallerPrettyfier,
+	//})
 
 }
 
