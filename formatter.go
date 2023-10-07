@@ -36,22 +36,20 @@ func (f *Formatter) Format(entry *logrus.Entry) ([]byte, error) {
 }
 
 func makeCallStack() string {
+
+	pc := make([]uintptr, 10) // 可根据实际情况调整大小
+	n := runtime.Callers(2, pc)
+	frames := runtime.CallersFrames(pc[:n])
+
 	callStack := make([]string, 0)
-	for skip := 1; ; skip++ { // Start from skip = 1 to skip the current frame.
-		pc, file, line, ok := runtime.Caller(skip)
-		if !ok {
-			break
-		}
-
-		//if -1 != strings.Index(file, "pkg/mod") {
-		//	continue
-		//}
-
-		callStack = append(callStack, fmt.Sprintf("%s:%d", file, line))
-		if pc == 0 {
+	for {
+		frame, more := frames.Next()
+		callStack = append(callStack, fmt.Sprintf("%s:%d", frame.File, frame.Line))
+		if !more {
 			break
 		}
 	}
+
 	return strings.Join(callStack, "\n")
 }
 

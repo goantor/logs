@@ -1,0 +1,7 @@
+[2023-10-07T18:51:23] /test Trace: 441289c16e9a40a6a3573bde35bbe9f3 POST IP: 192.168.1.1 Message: xxxx Data: {"data":{"name":"ll"},"params":null,"user":null}
+stack:
+/Users/lifeng/Work/shanqian/wider/frame/logs/logger.go:95
+/Users/lifeng/Work/shanqian/wider/frame/logs/logger.go:136
+/Users/lifeng/Work/shanqian/wider/frame/logs/log_test.go:22
+/usr/local/go/src/testing/testing.go:1595
+/usr/local/go/src/runtime/asm_arm64.s:1197
