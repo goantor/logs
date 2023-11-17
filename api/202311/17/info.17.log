@@ -1,9 +1,0 @@
-time="2023-11-17T17:42:32+08:00" level=info msg="[3333]hahahah" age=18 name=leaf
-time="2023-11-17 17:44:29" level=info msg="[3333]hahahah" age=18 name=leaf
-time="2023-11-17 17:45:09" level=info msg="[3333]hahahah" age=18 name=leaf
-time="2023-11-17 17:46:09" level=info msg="[3333]hahahah" data="map[age:15 name:ll]"
-time="2023-11-17 17:47:22" level=info msg="[3333]hahahah" data="[123 34 97 103 101 34 58 49 56 44 34 110 97 109 101 34 58 34 108 101 102 116 34 125]"
-time="2023-11-17 17:48:14" level=info msg="[3333]hahahah" data="{\"age\":18,\"name\":\"left\"}" err="hello world"
-time="2023-11-17 17:48:50" level=info msg="[3333]hahahah" data="{\"age\":18,\"err\":{},\"name\":\"left\"}"
-time="2023-11-17 17:49:55" level=info msg="[3333]hahahah" data="{\"age\":18,\"name\":\"left\"}" err="hello world"
-time="2023-11-17 17:51:55" level=info msg="[3333]hahahah" data="{\"age\":18,\"name\":\"left\"}" err="hello world"
