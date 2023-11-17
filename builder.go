@@ -48,6 +48,7 @@ func (b Builder) makeStdout() io.Writer {
 func (b Builder) Make() (entity *logrus.Logger) {
 	entity = &logrus.Logger{
 		Out:          b.makeStdout(),
+		Formatter:    b.opt.TakeFormatter(),
 		Hooks:        b.makeHooks(),
 		Level:        b.makeLevel(),
 		ExitFunc:     os.Exit,
