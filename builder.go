@@ -12,6 +12,7 @@ type IOption interface {
 	TakeLevel() string
 	TakeFormatter() logrus.Formatter
 	TakeReportCaller() bool
+	Clone() IOption
 }
 
 func NewBuilder(opt IOption) *Builder {
